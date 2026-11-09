@@ -124,7 +124,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 <body>
 <div class="wrap">
   <nav aria-label="Sections">
-    <a href="#compared">Action spaces</a><a href="#setup">Setup</a><a href="#results">Results</a><a href="#videos">Videos</a><a href="#code">Code and data</a>
+    <a href="#compared">Action spaces</a><a href="#setup">Setup</a><a href="#results">Results</a><a href="#videos">Videos</a><a href="#code">Code</a>
   </nav>
 
   <header class="hero">
@@ -132,7 +132,6 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
     <p class="lede">A controlled comparison of eight arm action spaces for catching objects in flight with a mobile manipulator and a dexterous hand, trained with reinforcement learning in simulation.</p>
         <div class="actions">
       <a class="btn primary" href="https://huggingface.co/spaces/anshi13110/catching-action-spaces">Videos on Hugging Face</a>
-      <a class="btn" data-repo="tree/main/results" href="results/">Results data</a>
     </div>
   </header>
 
@@ -191,15 +190,11 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
   </section>
 
   <section id="code">
-    <h2>Code and data</h2>
+    <h2>Code</h2>
     <div class="cards">
       <div class="card">
         <h3>Code and trained policies</h3>
-        <p>The code, the trained policies and the evaluation scripts will be released upon publication.</p>
-      </div>
-      <div class="card">
-        <h3>Results data</h3>
-        <p>The catch rate and the learning curves of every seed are in the <a data-repo="tree/main/results" href="results/">results folder</a>.</p>
+        <p>The code, the trained policies, the evaluation scripts and the data will be released upon publication.</p>
       </div>
     </div>
     <div class="card" style="margin-top:18px">
@@ -220,7 +215,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 
 <script>
 // Set this to your repository, e.g. "anshi13110/catching-action-spaces", so the data links open on GitHub.
-const REPO="anshitasinghas98-cpu/catching-action-spaces";
+const REPO="YOUR-GITHUB-NAME/catching-action-spaces";
 if(!REPO.startsWith("YOUR-")) document.querySelectorAll("[data-repo]").forEach(a=>a.href="https://github.com/"+REPO+"/"+a.dataset.repo);
 const SPACES=[
  {fam:"Impedance",col:"var(--imp)",a:"Impedance, low stiffness",dim:4,act:"Steps of the desired hand position and yaw",ctrl:"Operational-space impedance control, stiffness 0.25 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
