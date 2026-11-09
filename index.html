@@ -163,8 +163,8 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
       </div>
     <ul class="plain">
       <li><strong class="sans">Training.</strong> PPO with the hyperparameters of Catch It!, unchanged for every action space; TD-MPC2 with its default settings.</li>
-      <li><strong class="sans">Evaluation.</strong> 500 fixed throws per group. A throw counts as a catch when the object stays within 12 cm of the palm, touching the hand and slower than 0.3 m/s relative to it, for at least 0.5 s.</li>
-      <li><strong class="sans">Robustness.</strong> Added action delay, unseen object shapes, MuJoCo default contact parameters, faster throws (Mobile Base) and heavier objects (Fixed Base), each on the first 200 throws.</li>
+      <li><strong class="sans">Evaluation.</strong> 500 fixed throws per group. A throw counts as a catch when the object stays within 12 cm of the palm, touching the hand and slower than 0.3 m/s relative to it, for at least 0.5 s, and is not dropped afterwards.</li>
+      <li><strong class="sans">Robustness.</strong> Added action delay, unseen object shapes, MuJoCo default contact parameters, faster throws (Mobile Base) and heavier objects (Fixed Base, where faster throws passed out of reach of the arm), each on the first 200 throws.</li>
       <li><strong class="sans">Statistics.</strong> Seed-level means with 95% confidence intervals, Welch's t-tests with Holm's correction, and equivalence tests within ±10 percentage points.</li>
     </ul>
   </section>
@@ -220,7 +220,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 
 <script>
 // Set this to your repository, e.g. "anshi13110/catching-action-spaces", so the data links open on GitHub.
-const REPO="anshitasinghas98-cpu/catching-action-spaces";
+const REPO="YOUR-GITHUB-NAME/catching-action-spaces";
 if(!REPO.startsWith("YOUR-")) document.querySelectorAll("[data-repo]").forEach(a=>a.href="https://github.com/"+REPO+"/"+a.dataset.repo);
 const SPACES=[
  {fam:"Impedance",col:"var(--imp)",a:"Impedance, low stiffness",dim:4,act:"Steps of the desired hand position and yaw",ctrl:"Operational-space impedance control, stiffness 0.25 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
