@@ -2,7 +2,7 @@
 
 A controlled study of how the arm action space affects reinforcement learning for catching objects in flight with a mobile manipulator and a dexterous hand.
 
-**[Project page](https://YOUR-GITHUB-NAME.github.io/catching-action-spaces/)** | **[Videos](https://huggingface.co/spaces/anshi13110/catching-action-spaces)**
+**[Project page](https://anshitasinghas98-cpu.github.io/catching-action-spaces/)** | **[Videos](https://huggingface.co/spaces/anshi13110/catching-action-spaces)**
 
 ## Overview
 
@@ -46,7 +46,7 @@ In addition, six Group A policies of joint position with fixed gains were traine
 
 ## Results
 
-Selected results are shown on the [project page](https://YOUR-GITHUB-NAME.github.io/catching-action-spaces/). The full results and the data will be released upon publication.
+Selected results are shown on the [project page](https://anshitasinghas98-cpu.github.io/catching-action-spaces/). The full results and the data will be released upon publication.
 
 ## Videos
 
