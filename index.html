@@ -137,7 +137,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 
   <section id="compared">
     <h2>Eight arm action spaces</h2>
-    <p class="lead">The policy always commands the base and the fingers in the same way. Only the arm action changes, and with it the controller that turns the action into joint torques. Select an action space to see how it works.</p>
+    <p class="lead">The policy always commands the base and the fingers in the same way. Only the arm action changes, and with it the controller that turns the action into joint torques. In every action space, gravity and Coriolis torques are added to τ (not shown). Select an action space to see how it works.</p>
     <div class="explorer">
       <div class="list" role="tablist" aria-label="Action spaces" id="list"></div>
       <div class="panel" role="tabpanel" id="panel" aria-live="polite"></div>
@@ -153,7 +153,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
             <tr><th>Base</th><td>Mobile</td><td>Fixed</td><td>Mobile</td></tr>
             <tr><th>Throws</th><td>Not aimed</td><td>Aimed within reach</td><td>Not aimed</td></tr>
             <tr><th>Learner</th><td>PPO</td><td>PPO</td><td>PPO and TD-MPC2</td></tr>
-            <tr><th>Action spaces</th><td>All eight</td><td>All eight</td><td>Medium stiffness, variable impedance</td></tr>
+            <tr><th>Action spaces</th><td>All eight</td><td>All eight</td><td>Impedance, medium stiffness; variable impedance</td></tr>
             <tr><th>Seeds</th><td>6</td><td>5</td><td>5 per learner</td></tr>
             <tr><th>Tracking stage</th><td>8 million steps</td><td>4 million steps</td><td>5 million steps</td></tr>
             <tr><th>Catching stage</th><td>6 million steps</td><td>6 million steps</td><td>5 million steps</td></tr>
@@ -161,10 +161,10 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
         </table>
       </div>
     <ul class="plain">
-      <li><strong class="sans">Training.</strong> PPO with the hyperparameters of Catch It!, unchanged for every action space; TD-MPC2 with its default settings.</li>
-      <li><strong class="sans">Evaluation.</strong> 500 fixed throws per group. A throw counts as a catch when the object stays within 12 cm of the palm, touching the hand and slower than 0.3 m/s relative to it, for at least 0.5 s, and is not dropped afterwards.</li>
+      <li><strong class="sans">Training.</strong> PPO with the hyperparameters of Catch It!, unchanged for every action space; TD-MPC2 with its default settings except a fixed discount of 0.99.</li>
+      <li><strong class="sans">Evaluation.</strong> Deterministic actions on 500 fixed throws per group at restitution 0.39. A throw counts as a catch when the object stays within 12 cm of the palm, touching the hand (gaps of up to 50 ms allowed) and slower than 0.3 m/s relative to it, for at least 0.5 s, and is not dropped afterwards.</li>
       <li><strong class="sans">Robustness.</strong> Added action delay, unseen object shapes, MuJoCo default contact parameters, faster throws (Mobile Base) and heavier objects (Fixed Base, where faster throws passed out of reach of the arm), each on the first 200 throws.</li>
-      <li><strong class="sans">Statistics.</strong> Seed-level means with 95% confidence intervals, Welch's t-tests with Holm's correction, and equivalence tests within ±10 percentage points.</li>
+      <li><strong class="sans">Statistics.</strong> Seed-level means with 95% confidence intervals, Welch's t-tests with Holm's correction, paired t-tests for the conditions not encountered during training, and equivalence tests within ±10 percentage points.</li>
     </ul>
   </section>
 
@@ -176,7 +176,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
       <button role="tab" aria-selected="true" data-src="figures/catch_rate.png" data-cap="Catch rate of each action space on the 500 evaluation throws: mean over seeds (bar), 95% confidence interval (black line) and individual seeds (dots).">Catch rate</button>
       <button role="tab" aria-selected="false" data-src="figures/learning_curves_per_seed_group_a.png" data-cap="Learning curve of every seed with the Mobile Base (Group A): catch rate on the same 200 throws at every saved checkpoint of the catching stage.">Learning curves, Mobile Base</button>
       <button role="tab" aria-selected="false" data-src="figures/learning_curves_per_seed_group_b.png" data-cap="Learning curve of every seed with the Fixed Base (Group B): catch rate on the same 200 throws at every saved checkpoint of the catching stage.">Learning curves, Fixed Base</button>
-      <button role="tab" aria-selected="false" data-src="figures/learning_curves_group_c_and_joint_observation.png" data-cap="Learning curves of PPO and TD-MPC2 (Group C), and of joint position with fixed gains with and without the arm joint angles and velocities in the observation (mean over seeds with 95% confidence band).">Learning curves, PPO and TD-MPC2</button>
+      <button role="tab" aria-selected="false" data-src="figures/learning_curves_group_c_and_joint_observation.png" data-cap="Learning curves of PPO and TD-MPC2 (Group C), and of joint position with fixed gains with and without the arm joint angles and velocities in the observation: catch rate on the same 200 throws at every saved checkpoint of the catching stage (mean over seeds with 95% confidence band).">Learning curves, Group C and joint-observation check</button>
     </div>
     <figure>
       <img id="figimg" src="figures/catch_rate.png" alt="Catch rate of each action space">
@@ -186,7 +186,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 
   <section id="videos">
     <h2>Videos</h2>
-    <p>Rollouts of trained policies for every action space, with the Mobile Base and the Fixed Base, are on the <a href="https://huggingface.co/spaces/anshi13110/catching-action-spaces">Hugging Face Space</a>.</p>
+    <p>Rollouts of trained policies for every action space, with the Mobile Base and the Fixed Base, are on the <a href="https://huggingface.co/spaces/anshi13110/catching-action-spaces">Hugging Face Space</a>. Each run loads the final trained policy (checkpoint) of the chosen action space and seed and simulates it live in the same MuJoCo environment used for training and evaluation.</p>
   </section>
 
   <section id="code">
@@ -194,17 +194,17 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
     <div class="cards">
       <div class="card">
         <h3>Code and trained policies</h3>
-        <p>The code, the trained policies, the evaluation scripts and the data will be released upon publication.</p>
+        <p>The trained policies can be run in the Hugging Face Space. The checkpoints, the environment and the evaluation code will be released upon publication.</p>
       </div>
     </div>
     <div class="card" style="margin-top:18px">
       <h3>Citation</h3>
       <p>The citation for this work will be added upon publication. This work builds on the Catch It! environment:</p>
-      <pre id="bib">@article{zhang2024catchitlearningcatch,
+      <pre id="bib">@inproceedings{zhang2025catchit,
   title={Catch It! Learning to Catch in Flight with Mobile Dexterous Hands},
   author={Zhang, Yuanhang and Liang, Tianhai and Chen, Zhenyang and Ze, Yanjie and Xu, Huazhe},
-  year={2024},
-  journal={arXiv preprint arXiv:2409.10319}
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
+  year={2025}
 }</pre>
       <button class="btn" id="copy" style="margin-top:12px">Copy citation</button>
     </div>
@@ -218,13 +218,13 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 const REPO="anshitasinghas98-cpu/catching-action-spaces";
 if(!REPO.startsWith("YOUR-")) document.querySelectorAll("[data-repo]").forEach(a=>a.href="https://github.com/"+REPO+"/"+a.dataset.repo);
 const SPACES=[
- {fam:"Impedance",col:"var(--imp)",a:"Impedance, low stiffness",dim:4,act:"Steps of the desired hand position and yaw",ctrl:"Operational-space impedance control, stiffness 0.25 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
- {fam:"Impedance",col:"var(--imp)",a:"Impedance, medium stiffness",dim:4,act:"Steps of the desired hand position and yaw",ctrl:"Operational-space impedance control, medium stiffness",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
- {fam:"Impedance",col:"var(--imp)",a:"Impedance, high stiffness",dim:4,act:"Steps of the desired hand position and yaw",ctrl:"Operational-space impedance control, stiffness 1.75 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
- {fam:"Impedance",col:"var(--imp)",a:"Variable impedance",dim:5,act:"Hand steps plus a stiffness multiplier set at every step",ctrl:"Operational-space impedance control, stiffness between the low and high levels",eq:"k_p = m k₀,   m = 1 + 0.75 a₅"},
- {fam:"Position",col:"var(--ee)",a:"End-effector position",dim:4,act:"Steps of the target hand position and yaw (the action space of Catch It!)",ctrl:"Inverse kinematics, then proportional-integral-derivative joint control",eq:"τ = K_p e + K_i Σ e Δt + clip(K_d ė),   e = q_d − q"},
+ {fam:"Impedance",col:"var(--imp)",a:"Impedance, low stiffness",dim:4,act:"Steps of the target hand position and yaw",ctrl:"Operational-space impedance control, position stiffness 0.25 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
+ {fam:"Impedance",col:"var(--imp)",a:"Impedance, medium stiffness",dim:4,act:"Steps of the target hand position and yaw",ctrl:"Operational-space impedance control, medium position stiffness",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
+ {fam:"Impedance",col:"var(--imp)",a:"Impedance, high stiffness",dim:4,act:"Steps of the target hand position and yaw",ctrl:"Operational-space impedance control, position stiffness 1.75 times the medium value",eq:"τ = Jᵀ Λ [ k_p (x_d − x) − 2√k_p v ;  k_r e_r − 2√k_r ω ]"},
+ {fam:"Impedance",col:"var(--imp)",a:"Variable impedance",dim:5,act:"Hand steps plus a stiffness multiplier set at every step",ctrl:"Operational-space impedance control, position stiffness between the low and high levels",eq:"k_p = m k₀,   m = 1 + 0.75 a₅"},
+ {fam:"Position",col:"var(--ee)",a:"End-effector position",dim:4,act:"Steps of the target hand position and yaw (the action space of Catch It!)",ctrl:"Inverse kinematics, then proportional-integral-derivative joint control",eq:"τ = K_p e + K_i Σ e Δt + clip(K_d ė, ±D_max),   e = q_d − q"},
  {fam:"Joint space",col:"var(--joint)",a:"Joint position, fixed gains",dim:6,act:"Steps of the six joint targets",ctrl:"Proportional-integral-derivative joint control",eq:"q_d ← clip(q_d + 0.076 a)"},
- {fam:"Joint space",col:"var(--joint)",a:"Joint position, variable gains",dim:7,act:"Joint target steps plus a gain multiplier",ctrl:"Proportional-integral-derivative joint control with gains scaled by the policy",eq:"K_p ← m K_p,   K_d ← √m K_d,   m = 1 + 0.75 a₇"},
+ {fam:"Joint space",col:"var(--joint)",a:"Joint position, variable gains",dim:7,act:"Joint target steps plus a stiffness multiplier",ctrl:"Proportional-integral-derivative joint control with the gains scaled by the multiplier",eq:"K_p ← m K_p,   K_d ← √m K_d,   m = 1 + 0.75 a₇"},
  {fam:"Joint space",col:"var(--torque)",a:"Joint torque",dim:6,act:"Joint torques",ctrl:"Applied directly",eq:"τ = 100 a  N·m"}];
 const list=document.getElementById('list'), panel=document.getElementById('panel');
 let fam='';
@@ -254,3 +254,4 @@ document.getElementById('copy').addEventListener('click',async e=>{
 </script>
 </body>
 </html>
+ 
