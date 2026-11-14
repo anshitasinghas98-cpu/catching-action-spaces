@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Arm Action Spaces for Learning to Catch</title>
-<meta name="description" content="A controlled comparison of eight arm action spaces for learning to catch objects in flight with a mobile manipulator and a dexterous hand.">
+<meta name="description" content="A controlled comparison of eight arm action spaces for learning to catch objects in flight with a manipulator and a dexterous hand.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
@@ -129,7 +129,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
 
   <header class="hero">
     <h1>Arm Action Spaces for Learning to Catch</h1>
-    <p class="lede">A controlled comparison of eight arm action spaces for catching objects in flight with a mobile manipulator and a dexterous hand, trained with reinforcement learning in simulation.</p>
+    <p class="lede">A controlled comparison of eight arm action spaces for catching objects in flight with a manipulator and a dexterous hand, trained with reinforcement learning in simulation.</p>
         <div class="actions">
       <a class="btn primary" href="https://huggingface.co/spaces/anshi13110/catching-action-spaces">Videos on Hugging Face</a>
     </div>
@@ -150,7 +150,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
         <table>
           <thead><tr><th></th><th>Group A</th><th>Group B</th><th>Group C</th></tr></thead>
           <tbody>
-            <tr><th>Base</th><td>Mobile</td><td>Fixed</td><td>Mobile</td></tr>
+            <tr><th>Base</th><td>Mobile</td><td>Fixed (commanded to stay still)</td><td>Mobile</td></tr>
             <tr><th>Throws</th><td>Not aimed</td><td>Aimed within reach</td><td>Not aimed</td></tr>
             <tr><th>Learner</th><td>PPO</td><td>PPO</td><td>PPO and TD-MPC2</td></tr>
             <tr><th>Action spaces</th><td>All eight</td><td>All eight</td><td>Impedance, medium stiffness; variable impedance</td></tr>
@@ -161,9 +161,9 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
         </table>
       </div>
     <ul class="plain">
-      <li><strong class="sans">Training.</strong> PPO with the hyperparameters of Catch It!, unchanged for every action space; TD-MPC2 with its default hyperparameters except a fixed discount of 0.99.</li>
+      <li><strong class="sans">Training.</strong> PPO with the hyperparameters of Catch It!, unchanged for every action space; TD-MPC2 with its default hyperparameters, episodic termination and a discount of 0.99; its hand actions are masked in the tracking stage.</li>
       <li><strong class="sans">Evaluation.</strong> Deterministic actions on 500 fixed throws per group at restitution 0.39. A throw counts as a catch when the object stays within 12 cm of the palm, in contact with the hand (gaps of up to 50 ms allowed) and slower than 0.3 m/s relative to it, for at least 0.5 s, and is not dropped afterwards.</li>
-      <li><strong class="sans">Robustness.</strong> Added action delay, unseen object shapes, altered contact parameters, faster throws (Mobile Base) and heavier objects (Fixed Base), each on the first 200 throws.</li>
+      <li><strong class="sans">Robustness.</strong> Added action delay, unseen object shapes, altered contact parameters, faster throws (Mobile Base) and heavier objects (Fixed Base), each on the first 200 throws; for the variable action spaces, the stiffness multiplier held fixed; and one added step of delay on the base, arm or hand command alone.</li>
       <li><strong class="sans">Statistics.</strong> Seed-level means with 95% confidence intervals, Welch's t-tests with Holm's correction, paired t-tests for the conditions not encountered during training, and equivalence tests within ±10 percentage points.</li>
     </ul>
   </section>
@@ -176,7 +176,7 @@ footer{padding:48px 0 60px;color:var(--muted);font-family:var(--sans);font-size:
       <button role="tab" aria-selected="true" data-src="figures/catch_rate.png" data-cap="Catch rate of each action space on the 500 evaluation throws: mean over seeds (bar), 95% confidence interval (black line) and individual seeds (dots).">Catch rate</button>
       <button role="tab" aria-selected="false" data-src="figures/learning_curves_per_seed_group_a.png" data-cap="Learning curve of every seed with the Mobile Base (Group A): catch rate on the same 200 throws at every saved checkpoint of the catching stage.">Learning curves, Mobile Base</button>
       <button role="tab" aria-selected="false" data-src="figures/learning_curves_per_seed_group_b.png" data-cap="Learning curve of every seed with the Fixed Base (Group B): catch rate on the same 200 throws at every saved checkpoint of the catching stage.">Learning curves, Fixed Base</button>
-      <button role="tab" aria-selected="false" data-src="figures/learning_curves_group_c_and_joint_observation.png" data-cap="Learning curves of PPO and TD-MPC2 (Group C), and of joint position with fixed gains with and without the arm joint angles and velocities in the observation: catch rate on the same 200 throws at every saved checkpoint of the catching stage (mean over seeds with 95% confidence band).">Learning curves, Group C and joint-observation check</button>
+      <button role="tab" aria-selected="false" data-src="figures/learning_curves_group_c_and_joint_observation.png" data-cap="Learning curves of PPO and TD-MPC2 (Group C), and of joint position with fixed gains with and without the arm joint angles and velocities in the observation: catch rate on the same 200 throws at every saved checkpoint of the catching stage (mean over seeds with 95% confidence band).">Learning curves, Group C and joint observation</button>
     </div>
     <figure>
       <img id="figimg" src="figures/catch_rate.png" alt="Catch rate of each action space">
